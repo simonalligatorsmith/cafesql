@@ -185,6 +185,10 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON cafe.order_line TO 'Employee_1'@'localho
 GRANT SELECT, INSERT, UPDATE, DELETE ON cafe.order_header TO 'Employee_1'@'localhost';
 GRANT SELECT, INSERT, UPDATE, DELETE ON cafe.loyalty_member TO 'Employee_1'@'localhost';
 
+-- Members have privileges to read and edit the loyalty_members table only
+CREATE USER 'Member_1'@'localhost' IDENTIFIED BY 'member_1_password';
+GRANT SELECT, INSERT, UPDATE, DELETE ON cafe.loyalty_member TO 'Member_1'@'localhost';
+
 FLUSH PRIVILEGES;
 
 -- ##########################################################################
