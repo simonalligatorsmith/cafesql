@@ -122,10 +122,10 @@ CREATE TABLE loyalty_member (
 
 CREATE TABLE order_header (
 	order_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    subtotal DECIMAL(6, 2),
-    tax DECIMAL(6, 2),
-    discount DECIMAL(6, 2),
-	total DECIMAL(6,2),
+    subtotal DECIMAL(5, 2),
+    tax DECIMAL(5, 2),
+    discount DECIMAL(5, 2),
+	total DECIMAL(5,2),
     member_id SMALLINT UNSIGNED,
 	order_date DATETIME,
     FOREIGN KEY (member_id) REFERENCES loyalty_member(member_id)
