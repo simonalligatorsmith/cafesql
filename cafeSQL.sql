@@ -51,7 +51,6 @@ VALUES (1, 'Blender', '2025-06-30', '2023-11-02 12:30:30', '2023-12-15');
 CREATE TABLE recipe (
 	recipe_id TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     recipe_name VARCHAR(30),
-    amount TINYINT UNSIGNED,
     instruction VARCHAR(10000),
     is_drink BOOL
 );
@@ -79,8 +78,6 @@ values (1, 1);
 -- inventory table up to date
 CREATE TABLE inventory (
     inventory_id SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    product_id SMALLINT UNSIGNED,
-    ingredient_id TINYINT UNSIGNED,
     store_id SMALLINT UNSIGNED,
     quantity TINYINT UNSIGNED,
     expiration_date DATE,
@@ -121,12 +118,10 @@ values(1, 1, 2),
 -- product table done
 CREATE TABLE product (
 	product_id SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    inventory_id SMALLINT UNSIGNED,
 	recipe_id TINYINT UNSIGNED,
     product_name VARCHAR(30),
     price DECIMAL(5, 2),
-    FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id),
-	FOREIGN KEY (inventory_id) REFERENCES inventory(inventory_id) 
+    FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id)
 );
 
 -- insert statement adjusted
@@ -158,6 +153,7 @@ CREATE TABLE order_header (
     discount DECIMAL(6, 2),
 	total DECIMAL(6,2),
     member_id SMALLINT UNSIGNED,
+	order_date DATETIME
     FOREIGN KEY (member_id) REFERENCES loyalty_member(member_id)
 );
 
