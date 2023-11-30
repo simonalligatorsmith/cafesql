@@ -1,4 +1,4 @@
-Drop database cafe;
+DROP SCHEMA IF EXISTS cafe;
 CREATE DATABASE cafe;
 USE cafe;
 
@@ -43,6 +43,7 @@ CREATE TABLE appliance (
 CREATE TABLE recipe (
 	recipe_id TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     recipe_name VARCHAR(30),
+    amount TINYINT UNSIGNED,
     instruction VARCHAR(10000),
     is_drink BOOL
 );
