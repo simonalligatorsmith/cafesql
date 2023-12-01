@@ -1,8 +1,6 @@
--- NOTE: this is literally copy-and-pasted queries from Hunter's commit. I'm just splitting this into the three files - schema, data, and queries, so this one is the queries file. I have not tested extensively tested any of the queries in this fil. - S
 -- Queries
--- //////////////////////////////////////////////////////////////////////////
 
--- Display all the employees for all stores, and order them by their birthdays
+-- Display all the employees for all stores, and order them by store, then by their birthdays
 SELECT employee_id, store_id, first_name, last_name, emp_birthdate
 FROM employee
 ORDER BY store_id ASC, MONTH(emp_birthdate), DAY(emp_birthdate);
@@ -11,7 +9,7 @@ ORDER BY store_id ASC, MONTH(emp_birthdate), DAY(emp_birthdate);
 -- Group them by store, then order them by last name
 SELECT employee_id, store_id, first_name, last_name, start_date
 FROM employee
-WHERE start_date < '2023-01-01'
+WHERE YEAR(start_date) <= ( YEAR(CURRENT_DATE) - 1 )
 ORDER BY store_id ASC, last_name ASC;
 
 -- Displays all appliances that haven't been cleaned for more than a week
@@ -26,19 +24,20 @@ FROM appliance
 WHERE YEAR(warranty_date) = YEAR(CURRENT_DATE);
 
 -- Display all appliances needed for a specific recipe
-SELECT r.recipe_name, GROUP_CONCAT(ra.appliance_type) AS appliances
-FROM recipe r
-JOIN recipe_appliance ra ON r.recipe_id = ra.recipe_id
-WHERE r.recipe_name = 'Avocado Toast'
-GROUP BY r.recipe_name;
+SELECT DISTINCT RA.appliance_type
+FROM recipe R
+JOIN recipe_appliance RA ON R.recipe_id = RA.recipe_id
+WHERE R.recipe_name = 'Cinnamon Dolce Latte';
+
 
 -- Display all recipes that require a specific appliance
-SELECT r.recipe_id, r.recipe_name, r.amount
-FROM recipe r
-JOIN recipe_appliance ra ON r.recipe_id = ra.recipe_id
-WHERE ra.appliance_type = 'Commercial Blender';
+SELECT R.recipe_name
+FROM recipe_appliance RA
+JOIN recipe R ON R.recipe_id = RA.recipe_id
+WHERE RA.appliance_type = 'Commercial Blender';
 
--- Display all needed ingredients and their required amount for a specific recipe
+
+-- Display all needed ingredients for a specific recipe
 SELECT i.ingredient_name, ri.ingredient_amount
 FROM recipe r
 JOIN recipe_ingredient ri ON r.recipe_id = ri.recipe_id
@@ -46,17 +45,20 @@ JOIN ingredient i ON ri.ingredient_id = i.ingredient_id
 WHERE r.recipe_name = 'Avocado Toast';
 
 -- Display all ingredient inventories that have passed their expiration date
-SELECT i.inventory_id, i.store_id, i.expiration_date, ig.ingredient_name
+SELECT i.inventory_id, i.store_id, ing.ingredient_name, i.expiration_date
 FROM inventory i
-JOIN ingredient ig ON i.ingredient_id = ig.ingredient_id
+JOIN ingredient ing ON i.ingredient_id = ing.ingredient_id
 WHERE i.expiration_date < CURRENT_DATE
-ORDER BY i.store_id, i.inventory_id;
+GROUP BY i.store_id, i.inventory_id, ing.ingredient_name, i.expiration_date
+ORDER BY i.expiration_date;
 
--- Display all ingredient inventories sorted in alphabetical order
-SELECT i.inventory_id, i.store_id, i.expiration_date, ig.ingredient_name
+-- Display all inventories items, sorted by alphabetical order
+SELECT i.store_id, i.inventory_id, ing.ingredient_name, i.expiration_date
 FROM inventory i
-JOIN ingredient ig ON i.ingredient_id = ig.ingredient_id
-ORDER BY i.store_id, ig.ingredient_name;
+JOIN ingredient ing ON i.ingredient_id = ing.ingredient_id
+GROUP BY i.store_id, i.inventory_id, ing.ingredient_name, i.expiration_date
+ORDER BY ing.ingredient_name;
+
 
 -- Display the total amount in sales from orders for the last 7 days
 SELECT SUM(total) AS orders_total_last_7_days
