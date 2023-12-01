@@ -5,8 +5,7 @@ SELECT employee_id, store_id, first_name, last_name, emp_birthdate
 FROM employee
 ORDER BY store_id ASC, MONTH(emp_birthdate), DAY(emp_birthdate);
 
-
--- Display all employees that started working before before the current year.
+-- Display all employees that started working before the current year.
 -- Group them by store, then order them by last name
 SELECT employee_id, store_id, first_name, last_name, start_date
 FROM employee
@@ -37,6 +36,7 @@ FROM recipe_appliance RA
 JOIN recipe R ON R.recipe_id = RA.recipe_id
 WHERE RA.appliance_type = 'Commercial Blender';
 
+
 -- Display all needed ingredients for a specific recipe
 SELECT i.ingredient_name, ri.ingredient_amount
 FROM recipe r
@@ -59,6 +59,7 @@ JOIN ingredient ing ON i.ingredient_id = ing.ingredient_id
 GROUP BY i.store_id, i.inventory_id, ing.ingredient_name, i.expiration_date
 ORDER BY ing.ingredient_name;
 
+
 -- Display the total amount in sales from orders for the last 7 days
 SELECT SUM(total) AS orders_total_last_7_days
 FROM order_header
@@ -69,7 +70,7 @@ SELECT ol.order_id, ol.quantity
 FROM order_line ol
 JOIN product p ON ol.product_id = p.product_id
 JOIN order_header oh ON ol.order_id = oh.order_id
-WHERE p.product_name = 'Pineapple Coconut Smoothie';
+WHERE p.product_name = 'Avocado Toast';
 
 -- Display all orders with their total number of order_lines
 SELECT oh.order_id, COUNT(ol.order_id) AS total_order_lines
