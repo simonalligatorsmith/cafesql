@@ -5,8 +5,8 @@ USE cafe;
 CREATE TABLE store (
     store_id SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     store_phone CHAR(10),
-    store_city VARCHAR(20),
-    store_state CHAR(2)
+    store_city VARCHAR(20) NOT NULL,
+    store_state CHAR(2) NOT NULL
 );
 	
 
@@ -49,7 +49,7 @@ CREATE TABLE recipe (
     recipe_name VARCHAR(30),
     amount TINYINT UNSIGNED,
     instruction VARCHAR(10000),
-    is_drink BOOL
+    is_drink BOOL NOT NULL
 );
 
 
