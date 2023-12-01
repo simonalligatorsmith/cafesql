@@ -309,13 +309,13 @@ INSERT INTO loyalty_member (member_id, mem_first_name, mem_last_name, mem_email,
 
 
 
-INSERT INTO order_header (subtotal, tax, discount, total, member_id)
+INSERT INTO order_header (subtotal, tax, discount, total, member_id, order_date)
 	VALUES 
-	(50.00, 5.00, 10.00, 45.00, 1),
-	(75.50, 7.00, 15.75, 66.75, 2),
-	(120.00, 10.50, 20.00, 109.50, 3),
-	(30.25, 3.50, 5.25, 28.50, 4),
-	(90.00, 8.00, 18.00, 80.00, 5);
+	(50.00, 5.00, 10.00, 45.00, 1,'2023-11-30'),
+	(75.50, 7.00, 15.75, 66.75, 2,'2022-10-23'),
+	(120.00, 10.50, 20.00, 109.50, 3,'2000-01-01'),
+	(30.25, 3.50, 5.25, 28.50, 4,'2005-03-05'),
+	(90.00, 8.00, 18.00, 80.00, 5,'2003-07-04');
 
 
 

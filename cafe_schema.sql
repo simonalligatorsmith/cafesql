@@ -1,4 +1,4 @@
-Drop database cafe;
+DROP SCHEMA IF EXISTS cafe;
 CREATE DATABASE cafe;
 USE cafe;
 
@@ -13,12 +13,12 @@ CREATE TABLE store (
 
 CREATE TABLE employee (
 	employee_id MEDIUMINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-	store_id SMALLINT UNSIGNED,
-	first_name VARCHAR(15),
-	last_name VARCHAR(20),
+	store_id SMALLINT UNSIGNED NOT NULL,
+	first_name VARCHAR(15) NOT NULL,
+	last_name VARCHAR(20) NOT NULL,
 	emp_birthdate DATE, 
 	emp_email VARCHAR(35),
-	emp_phone CHAR(10),
+	emp_phone CHAR(10) NOT NULL,
 	start_date DATE,
 	emp_city VARCHAR(20),
 	emp_state CHAR(2),
@@ -31,7 +31,7 @@ CREATE TABLE employee (
 
 CREATE TABLE appliance (
 	appliance_id TINYINT UNSIGNED AUTO_INCREMENT,
-    store_id SMALLINT UNSIGNED,
+    store_id SMALLINT UNSIGNED NOT NULL,
     appliance_type VARCHAR(20),
     warranty_date DATE,
     last_cleaned_date DATETIME,
@@ -97,8 +97,8 @@ CREATE TABLE inventory (
 -- Weak entity implementation for the many to many relataionship between ingredient and recipe
 -- AKA many ingredients may be used for one recipe  	
 CREATE TABLE recipe_ingredient (
-	recipe_id TINYINT UNSIGNED,
-	ingredient_id TINYINT UNSIGNED,
+	recipe_id TINYINT UNSIGNED NOT NULL,
+	ingredient_id TINYINT UNSIGNED NOT NULL,
     ingredient_amount TINYINT UNSIGNED,
     PRIMARY KEY (recipe_id, ingredient_id),
 	FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id)
@@ -126,10 +126,10 @@ CREATE TABLE product (
 
 CREATE TABLE loyalty_member (
 	member_id SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-	mem_first_name VARCHAR(15),
-	mem_last_name VARCHAR(20),
+	mem_first_name VARCHAR(15) NOT NULL,
+	mem_last_name VARCHAR(20) NOT NULL,
     mem_email VARCHAR(35),
-    mem_phone CHAR(10),
+    mem_phone CHAR(10) NOT NULL,
     mem_birthdate DATE,
     loyalty_credit SMALLINT UNSIGNED
 );
@@ -139,11 +139,12 @@ CREATE TABLE loyalty_member (
 
 CREATE TABLE order_header (
 	order_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    subtotal DECIMAL(6, 2),
-    tax DECIMAL(6, 2),
-    discount DECIMAL(6, 2),
-	total DECIMAL(6,2),
+    subtotal DECIMAL(5, 2) NOT NULL,
+    tax DECIMAL(5, 2) NOT NULL,
+    discount DECIMAL(5, 2),
+	total DECIMAL(5,2) NOT NULL,
     member_id SMALLINT UNSIGNED,
+	order_date DATETIME NOT NULL,
     FOREIGN KEY (member_id) REFERENCES loyalty_member(member_id)
 		ON UPDATE CASCADE -- if loyalty member changes, ok to reflect that here
         ON DELETE SET NULL -- if loyalty member deleted, ok to set member_id to NULL for previous orders
