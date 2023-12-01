@@ -22,7 +22,9 @@ CREATE TABLE employee (
 	start_date DATE,
 	emp_city VARCHAR(20),
 	emp_state CHAR(2),
-    foreign key (store_id) references store(store_id)
+    foreign key (store_id) references store(store_id) 
+		ON UPDATE CASCADE -- update store_id if the store's store_id changes
+        ON DELETE RESTRICT -- can't delete store until all employees are deleted or reassigned
 );
 
 
@@ -36,6 +38,8 @@ CREATE TABLE appliance (
     service_date DATE,
     PRIMARY KEY (appliance_id),
     FOREIGN KEY (store_id) REFERENCES store(store_id)
+		ON UPDATE CASCADE -- update store_id if the store's store_id changes 
+        ON DELETE RESTRICT -- this prevents an appliance from being unassigned to a store
 );
 
 
@@ -60,6 +64,8 @@ CREATE TABLE recipe_appliance (
 	appliance_type VARCHAR(20),
     PRIMARY KEY (recipe_id, appliance_type),
 	FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id)
+		ON UPDATE CASCADE -- if recipe_id is changed, reflect that change here
+		ON DELETE CASCADE -- if recipe is deleted, no need to save recipe_appliance relationship
 	);
 
 
@@ -78,8 +84,12 @@ CREATE TABLE inventory (
     ingredient_id TINYINT UNSIGNED NOT NULL,
     store_id SMALLINT UNSIGNED,
     expiration_date DATE,
-    FOREIGN KEY (store_id) REFERENCES store(store_id),
+    FOREIGN KEY (store_id) REFERENCES store(store_id)
+		ON UPDATE CASCADE -- update store_id if the store's store_id changes 
+        ON DELETE RESTRICT, -- this prevents an inventory item from being unassigned to a store
     FOREIGN KEY (ingredient_id) REFERENCES ingredient(ingredient_id)
+		ON UPDATE CASCADE -- if something changes about the ingredient_id, reflect changes in inventory
+        ON DELETE RESTRICT -- if the ingredient is removed from the list while there's inventory of the ingredient, complain
 );
 
 
@@ -91,8 +101,12 @@ CREATE TABLE recipe_ingredient (
 	ingredient_id TINYINT UNSIGNED,
     ingredient_amount TINYINT UNSIGNED,
     PRIMARY KEY (recipe_id, ingredient_id),
-	FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id),
+	FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id)
+		ON UPDATE CASCADE -- if changes to recipe_id are made, reflect that here
+        ON DELETE CASCADE, -- if the recipe is deleted, this list of its ingredients can also be deleted
 	FOREIGN KEY (ingredient_id) REFERENCES ingredient(ingredient_id)
+		ON UPDATE CASCADE -- if ingredient_id changes for whatever reason, reflect that change here
+        ON DELETE RESTRICT -- complain if an ingredient is deleted, but the recipe_ingredient still references it
 	);
 	
 	
@@ -104,6 +118,8 @@ CREATE TABLE product (
     product_name VARCHAR(30),
     price DECIMAL(5, 2),
     FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id)
+		ON UPDATE CASCADE -- if recipe_id changes, reflect that here
+		ON DELETE RESTRICT -- we don't want to have a phantom product with no recipe to make it
 );
 
 
@@ -129,6 +145,8 @@ CREATE TABLE order_header (
 	total DECIMAL(6,2),
     member_id SMALLINT UNSIGNED,
     FOREIGN KEY (member_id) REFERENCES loyalty_member(member_id)
+		ON UPDATE CASCADE -- if loyalty member changes, ok to reflect that here
+        ON DELETE SET NULL -- if loyalty member deleted, ok to set member_id to NULL for previous orders
 );
 
 
@@ -139,6 +157,10 @@ CREATE TABLE order_line (
     product_id SMALLINT UNSIGNED NOT NULL,
     quantity TINYINT UNSIGNED CHECK (quantity > 0), 
     PRIMARY KEY (order_id, product_id),
-    FOREIGN KEY (order_id) REFERENCES order_header(order_id),
+    FOREIGN KEY (order_id) REFERENCES order_header(order_id)
+		ON UPDATE CASCADE
+        ON DELETE CASCADE, -- if deleting order_header, delete order_lines as well
     FOREIGN KEY (product_id) REFERENCES product(product_id)
+		ON UPDATE CASCADE
+        ON DELETE RESTRICT -- don't delete the product if there are order_lines that reference it
 );
