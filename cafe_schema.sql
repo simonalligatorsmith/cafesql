@@ -10,18 +10,18 @@ CREATE TABLE store (
 );
 	
 
-
 CREATE TABLE employee (
 	employee_id MEDIUMINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	store_id SMALLINT UNSIGNED NOT NULL,
 	first_name VARCHAR(15) NOT NULL,
 	last_name VARCHAR(20) NOT NULL,
-	emp_birthdate DATE, 
+	emp_birthdate DATE NOT NULL,
 	emp_email VARCHAR(35),
 	emp_phone CHAR(10) NOT NULL,
 	start_date DATE,
 	emp_city VARCHAR(20),
 	emp_state CHAR(2),
+    emp_is_over_14 BOOL DEFAULT (TIMESTAMPDIFF(YEAR, emp_birthdate, NOW()) >= 14), -- no employees younger than 14, this is now you tell
     foreign key (store_id) references store(store_id) 
 		ON UPDATE CASCADE -- update store_id if the store's store_id changes
         ON DELETE RESTRICT -- can't delete store until all employees are deleted or reassigned
@@ -116,21 +116,21 @@ CREATE TABLE product (
 	product_id SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	recipe_id TINYINT UNSIGNED NOT NULL, 
     product_name VARCHAR(30),
-    price DECIMAL(5, 2),
+    price DECIMAL(5, 2) CHECK (price>=0), -- business rule: price can't be negative
     FOREIGN KEY (recipe_id) REFERENCES recipe(recipe_id)
 		ON UPDATE CASCADE -- if recipe_id changes, reflect that here
 		ON DELETE RESTRICT -- we don't want to have a phantom product with no recipe to make it
 );
 
 
-
+-- per business rule, none of their identifying fields (name, email, etc) can be null.
 CREATE TABLE loyalty_member (
 	member_id SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	mem_first_name VARCHAR(15) NOT NULL,
 	mem_last_name VARCHAR(20) NOT NULL,
-    mem_email VARCHAR(35),
+    mem_email VARCHAR(35) NOT NULL,
     mem_phone CHAR(10) NOT NULL,
-    mem_birthdate DATE,
+    mem_birthdate DATE NOT NULL,
     loyalty_credit SMALLINT UNSIGNED
 );
 
@@ -142,7 +142,7 @@ CREATE TABLE order_header (
     subtotal DECIMAL(5, 2) NOT NULL,
     tax DECIMAL(5, 2) NOT NULL,
     discount DECIMAL(5, 2),
-	total DECIMAL(5,2) NOT NULL,
+	total DECIMAL(5,2) NOT NULL CHECK(total >= 0), -- business rule: total can't be negative
     member_id SMALLINT UNSIGNED,
 	order_date DATETIME NOT NULL,
     FOREIGN KEY (member_id) REFERENCES loyalty_member(member_id)

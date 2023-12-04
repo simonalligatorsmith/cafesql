@@ -46,8 +46,9 @@ INSERT INTO employee (store_id, first_name, last_name, emp_birthdate, emp_email,
 	(4, 'Ethan', 'Smith', '1990-07-18', 'ethan.smith@example.com', '6173456789', '2017-04-30', 'Boston', 'MA'),
 	(4, 'Mia', 'Brown', '1987-02-03', 'mia.brown@example.com', '6174567890', '2020-07-15', 'Boston', 'MA'),
 	(4, 'William', 'Martin', '1996-09-10', 'william.martin@example.com', '6175678901', '2015-10-22', 'Boston', 'MA'),
-	(4, 'Olivia', 'Davis', '1982-04-15', 'olivia.davis@example.com', '6176789012', '2018-02-08', 'Boston', 'MA');
-
+	(4, 'Olivia', 'Davis', '1982-04-15', 'olivia.davis@example.com', '6176789012', '2018-02-08', 'Boston', 'MA'),
+    -- Test underage employee to demonstrate functionality:
+	(4, 'Jonathan', 'Meyers', '2023-05-22', 'jonathan.meyers@example.com', '6171234123', '2016-08-18', 'Boston', 'MA');
 
 
 INSERT INTO appliance (store_id, appliance_type, warranty_date, last_cleaned_date, service_date)

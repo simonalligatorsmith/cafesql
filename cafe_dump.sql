@@ -57,16 +57,17 @@ CREATE TABLE `employee` (
   `store_id` smallint unsigned NOT NULL,
   `first_name` varchar(15) NOT NULL,
   `last_name` varchar(20) NOT NULL,
-  `emp_birthdate` date DEFAULT NULL,
+  `emp_birthdate` date NOT NULL,
   `emp_email` varchar(35) DEFAULT NULL,
   `emp_phone` char(10) NOT NULL,
   `start_date` date DEFAULT NULL,
   `emp_city` varchar(20) DEFAULT NULL,
   `emp_state` char(2) DEFAULT NULL,
+  `emp_is_over_14` tinyint(1) DEFAULT ((timestampdiff(YEAR,`emp_birthdate`,now()) >= 14)),
   PRIMARY KEY (`employee_id`),
   KEY `store_id` (`store_id`),
   CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`store_id`) REFERENCES `store` (`store_id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -75,7 +76,7 @@ CREATE TABLE `employee` (
 
 LOCK TABLES `employee` WRITE;
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
-INSERT INTO `employee` VALUES (1,1,'Sally','Davidson','2001-03-02','saldavidson@hotmail.com','8015672314','2020-04-05','Provo','UT'),(2,1,'Emily','Johnson','1985-08-22','emily.johnson@example.com','8012345678','2019-01-05','Provo','UT'),(3,1,'Michael','Davis','1993-03-10','michael.davis@example.com','8013456789','2021-04-18','Provo','UT'),(4,1,'Sophia','Wilson','1988-11-28','sophia.wilson@example.com','8014567890','2018-07-01','Provo','UT'),(5,1,'Daniel','Miller','1996-06-05','daniel.miller@example.com','8015678901','2022-09-15','Provo','UT'),(6,1,'Olivia','Taylor','1991-01-17','olivia.taylor@example.com','8016789012','2017-11-22','Provo','UT'),(7,3,'Ethan','Brown','1987-09-03','ethan.brown@example.com','3121234567','2016-05-20','Chicago','IL'),(8,3,'Grace','Lee','1990-02-15','grace.lee@example.com','3122345678','2020-10-08','Chicago','IL'),(9,3,'Liam','Anderson','1995-07-28','liam.anderson@example.com','3123456789','2018-03-12','Chicago','IL'),(10,3,'Megan','Martin','1983-12-01','megan.martin@example.com','3124567890','2015-09-25','Chicago','IL'),(11,3,'William','Smith','1992-04-18','william.smith@example.com','3125678901','2019-12-30','Chicago','IL'),(12,3,'Emma','Taylor','1989-11-05','emma.taylor@example.com','3126789012','2017-02-14','Chicago','IL'),(13,5,'Daniel','Johnson','1980-06-12','daniel.johnson@example.com','7131234567','2014-08-03','Houston','TX'),(14,5,'Sophie','Smith','1986-03-25','sophie.smith@example.com','7132345678','2013-11-10','Houston','TX'),(15,5,'Ryan','Miller','1994-10-08','ryan.miller@example.com','7133456789','2022-01-18','Houston','TX'),(16,5,'Olivia','Davis','1982-05-20','olivia.davis@example.com','7134567890','2019-04-05','Houston','TX'),(17,5,'Matthew','Anderson','1997-01-03','matthew.anderson@example.com','7135678901','2016-06-22','Houston','TX'),(18,5,'Emma','Brown','1984-08-17','emma.brown@example.com','7136789012','2015-09-30','Houston','TX'),(19,2,'Liam','Martin','1988-02-28','liam.martin@example.com','3031234567','2018-11-15','Denver','CO'),(20,2,'Grace','Lee','1995-09-15','grace.lee@example.com','3032345678','2017-04-20','Denver','CO'),(21,2,'Ethan','Wilson','1991-04-02','ethan.wilson@example.com','3033456789','2022-08-03','Denver','CO'),(22,2,'Sophia','Anderson','1983-11-14','sophia.anderson@example.com','3034567890','2016-01-10','Denver','CO'),(23,2,'Michael','Taylor','1996-06-27','michael.taylor@example.com','3035678901','2019-03-28','Denver','CO'),(24,2,'Ava','Martin','1989-12-10','ava.martin@example.com','3036789012','2015-06-05','Denver','CO'),(25,4,'Emma','Wilson','1993-05-22','emma.wilson@example.com','6171234567','2016-08-18','Boston','MA'),(26,4,'Ava','Taylor','1985-12-05','ava.taylor@example.com','6172345678','2019-01-23','Boston','MA'),(27,4,'Ethan','Smith','1990-07-18','ethan.smith@example.com','6173456789','2017-04-30','Boston','MA'),(28,4,'Mia','Brown','1987-02-03','mia.brown@example.com','6174567890','2020-07-15','Boston','MA'),(29,4,'William','Martin','1996-09-10','william.martin@example.com','6175678901','2015-10-22','Boston','MA'),(30,4,'Olivia','Davis','1982-04-15','olivia.davis@example.com','6176789012','2018-02-08','Boston','MA');
+INSERT INTO `employee` VALUES (1,1,'Sally','Davidson','2001-03-02','saldavidson@hotmail.com','8015672314','2020-04-05','Provo','UT',1),(2,1,'Emily','Johnson','1985-08-22','emily.johnson@example.com','8012345678','2019-01-05','Provo','UT',1),(3,1,'Michael','Davis','1993-03-10','michael.davis@example.com','8013456789','2021-04-18','Provo','UT',1),(4,1,'Sophia','Wilson','1988-11-28','sophia.wilson@example.com','8014567890','2018-07-01','Provo','UT',1),(5,1,'Daniel','Miller','1996-06-05','daniel.miller@example.com','8015678901','2022-09-15','Provo','UT',1),(6,1,'Olivia','Taylor','1991-01-17','olivia.taylor@example.com','8016789012','2017-11-22','Provo','UT',1),(7,3,'Ethan','Brown','1987-09-03','ethan.brown@example.com','3121234567','2016-05-20','Chicago','IL',1),(8,3,'Grace','Lee','1990-02-15','grace.lee@example.com','3122345678','2020-10-08','Chicago','IL',1),(9,3,'Liam','Anderson','1995-07-28','liam.anderson@example.com','3123456789','2018-03-12','Chicago','IL',1),(10,3,'Megan','Martin','1983-12-01','megan.martin@example.com','3124567890','2015-09-25','Chicago','IL',1),(11,3,'William','Smith','1992-04-18','william.smith@example.com','3125678901','2019-12-30','Chicago','IL',1),(12,3,'Emma','Taylor','1989-11-05','emma.taylor@example.com','3126789012','2017-02-14','Chicago','IL',1),(13,5,'Daniel','Johnson','1980-06-12','daniel.johnson@example.com','7131234567','2014-08-03','Houston','TX',1),(14,5,'Sophie','Smith','1986-03-25','sophie.smith@example.com','7132345678','2013-11-10','Houston','TX',1),(15,5,'Ryan','Miller','1994-10-08','ryan.miller@example.com','7133456789','2022-01-18','Houston','TX',1),(16,5,'Olivia','Davis','1982-05-20','olivia.davis@example.com','7134567890','2019-04-05','Houston','TX',1),(17,5,'Matthew','Anderson','1997-01-03','matthew.anderson@example.com','7135678901','2016-06-22','Houston','TX',1),(18,5,'Emma','Brown','1984-08-17','emma.brown@example.com','7136789012','2015-09-30','Houston','TX',1),(19,2,'Liam','Martin','1988-02-28','liam.martin@example.com','3031234567','2018-11-15','Denver','CO',1),(20,2,'Grace','Lee','1995-09-15','grace.lee@example.com','3032345678','2017-04-20','Denver','CO',1),(21,2,'Ethan','Wilson','1991-04-02','ethan.wilson@example.com','3033456789','2022-08-03','Denver','CO',1),(22,2,'Sophia','Anderson','1983-11-14','sophia.anderson@example.com','3034567890','2016-01-10','Denver','CO',1),(23,2,'Michael','Taylor','1996-06-27','michael.taylor@example.com','3035678901','2019-03-28','Denver','CO',1),(24,2,'Ava','Martin','1989-12-10','ava.martin@example.com','3036789012','2015-06-05','Denver','CO',1),(25,4,'Emma','Wilson','1993-05-22','emma.wilson@example.com','6171234567','2016-08-18','Boston','MA',1),(26,4,'Ava','Taylor','1985-12-05','ava.taylor@example.com','6172345678','2019-01-23','Boston','MA',1),(27,4,'Ethan','Smith','1990-07-18','ethan.smith@example.com','6173456789','2017-04-30','Boston','MA',1),(28,4,'Mia','Brown','1987-02-03','mia.brown@example.com','6174567890','2020-07-15','Boston','MA',1),(29,4,'William','Martin','1996-09-10','william.martin@example.com','6175678901','2015-10-22','Boston','MA',1),(30,4,'Olivia','Davis','1982-04-15','olivia.davis@example.com','6176789012','2018-02-08','Boston','MA',1),(31,4,'Jonathan','Meyers','2023-05-22','jonathan.meyers@example.com','6171234123','2016-08-18','Boston','MA',0);
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -144,9 +145,9 @@ CREATE TABLE `loyalty_member` (
   `member_id` smallint unsigned NOT NULL AUTO_INCREMENT,
   `mem_first_name` varchar(15) NOT NULL,
   `mem_last_name` varchar(20) NOT NULL,
-  `mem_email` varchar(35) DEFAULT NULL,
+  `mem_email` varchar(35) NOT NULL,
   `mem_phone` char(10) NOT NULL,
-  `mem_birthdate` date DEFAULT NULL,
+  `mem_birthdate` date NOT NULL,
   `loyalty_credit` smallint unsigned DEFAULT NULL,
   PRIMARY KEY (`member_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -179,7 +180,8 @@ CREATE TABLE `order_header` (
   `order_date` datetime NOT NULL,
   PRIMARY KEY (`order_id`),
   KEY `member_id` (`member_id`),
-  CONSTRAINT `order_header_ibfk_1` FOREIGN KEY (`member_id`) REFERENCES `loyalty_member` (`member_id`) ON DELETE SET NULL ON UPDATE CASCADE
+  CONSTRAINT `order_header_ibfk_1` FOREIGN KEY (`member_id`) REFERENCES `loyalty_member` (`member_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `order_header_chk_1` CHECK ((`total` >= 0))
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -236,7 +238,8 @@ CREATE TABLE `product` (
   `price` decimal(5,2) DEFAULT NULL,
   PRIMARY KEY (`product_id`),
   KEY `recipe_id` (`recipe_id`),
-  CONSTRAINT `product_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipe` (`recipe_id`) ON DELETE RESTRICT ON UPDATE CASCADE
+  CONSTRAINT `product_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipe` (`recipe_id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `product_chk_1` CHECK ((`price` >= 0))
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -365,4 +368,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-04 13:40:00
+-- Dump completed on 2023-12-04 16:31:39

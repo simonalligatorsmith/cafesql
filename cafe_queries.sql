@@ -85,3 +85,7 @@ FROM loyalty_member lm
 JOIN order_header oh ON lm.member_id = oh.member_id
 GROUP BY lm.member_id, lm.mem_first_name, lm.mem_last_name
 ORDER BY total_amount_spent DESC;
+
+
+-- Select underage employees
+SELECT * FROM employee WHERE emp_is_over_14 IS NOT TRUE;
